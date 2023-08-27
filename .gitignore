@@ -6,7 +6,7 @@ __pycache__
 venv
 
 client/node_modules
-client/build
+client/build/*
 
 .DS_Store
 
