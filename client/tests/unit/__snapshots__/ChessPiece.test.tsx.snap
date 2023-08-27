@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<svg>
+  <image
+    height={100}
+    href="Chess_plt45.svg"
+    role="piece-image"
+    width={100}
+  />
+</svg>
+`;
