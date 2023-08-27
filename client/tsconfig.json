@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "outDir": "./build/",
+      "noImplicitAny": true,
+      "module": "es6",
+      "target": "es5",
+      "jsx": "react-jsx",
+      "allowJs": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "typeRoots": ["./src/types", "./node_modules/@types"]
+    },
+    // "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"],
+    // "include": ["./src/**/*.tsx", "./src/**/*.ts"]
+}

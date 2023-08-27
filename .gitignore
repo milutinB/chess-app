@@ -1,0 +1,12 @@
+app/db
+__pycache__
+.vscode
+.pytest_cache
+
+venv
+
+client/node_modules
+client/build
+
+.DS_Store
+

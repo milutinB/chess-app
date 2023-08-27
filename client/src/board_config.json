@@ -1,0 +1,22 @@
+{
+    "dark-color":  "#800020",
+    "light-color": "#EADDCA",
+    "pieces": {
+        "w" : {
+            "rook": "Chess_rlt45.svg",
+            "king": "Chess_klt45.svg",
+            "queen": "Chess_qlt45.svg",
+            "pawn": "Chess_plt45.svg",
+            "knight": "Chess_nlt45.svg",
+            "bishop": "Chess_blt45.svg"
+        },
+        "b": {
+            "rook": "Chess_rdt45.svg",
+            "king": "Chess_kdt45.svg",
+            "queen": "Chess_qdt45.svg",
+            "pawn": "Chess_pdt45.svg",
+            "knight": "Chess_ndt45.svg",
+            "bishop": "Chess_bdt45.svg"
+        }
+    }
+}
