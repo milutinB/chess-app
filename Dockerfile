@@ -14,5 +14,5 @@ COPY client/ chess/client/
 RUN cd chess/client; npm install; npm run build
 
 # configuration
-ENV FLASK_ENV=productions
+ENV FLASK_ENV=production
 CMD cd chess; flask run --host=0.0.0.0 --port=8080
