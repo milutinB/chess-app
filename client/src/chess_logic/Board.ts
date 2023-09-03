@@ -156,6 +156,31 @@ export class Board {
         return newBoard;
     }
 
+    /**
+     * 
+     * @param other another board
+     * @returns true if this and other have same configuration of pieces, false otehrwise
+     */
+    equal(other: Board) : boolean {
+        let result: boolean = true;
+
+        [0, 1, 2, 3, 4, 5, 6, 7].map((r: RowIndex) => {
+            [0, 1, 2, 3, 4, 5, 6, 7].map((c: ColIndex) => {
+                if (this.boardState[r][c] == 0) {
+                    result &&= other.boardState[r][c] == 0;
+                } else {
+                    if (other.boardState[r][c] == 0)
+                        result = false;
+                    else 
+                        result &&= (this.boardState[r][c] as Piece).getSym()
+                        == (other.boardState[r][c] as Piece).getSym();
+                }
+            });
+        })
+        
+        return true;
+    }
+
     getData(coord: BoardCoord) : SquareData {
         return this.boardState[coord.r][coord.c];
     }

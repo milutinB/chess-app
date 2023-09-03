@@ -7,6 +7,7 @@ import Graveyard from "./Graveyard";
 import { GameState } from "../types/App.d";
 import { GameStateContext } from "../GameStateContext";
 import { Piece } from "../chess_logic/Piece";
+import { Board } from "../chess_logic/Board";
 import PromotionMenue from "./PromotionMenue";
 
 export default function BoardComponent(props: BoardProps): JSX.Element {
@@ -21,8 +22,10 @@ export default function BoardComponent(props: BoardProps): JSX.Element {
         0, 1, 2, 3, 4, 5, 6, 7
     ]
 
-    let capturedByOpponent: Piece[] = state.activePlayer == 'w' ? state.board.capturedByBlack : state.board.capturedByWhite;
-    let captured: Piece[] = state.activePlayer == 'w' ? state.board.capturedByWhite : state.board.capturedByBlack;
+    let renderedBoard: Board = state.previousBoards[state.historyIndex];
+
+    let capturedByOpponent: Piece[] = state.activePlayer == 'w' ? renderedBoard.capturedByBlack : renderedBoard.capturedByWhite;
+    let captured: Piece[] = state.activePlayer == 'w' ? renderedBoard.capturedByWhite : renderedBoard.capturedByBlack;
 
     let promoWidth: number = size * .6;
     let promoHeight: number = size * .2;

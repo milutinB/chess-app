@@ -7,6 +7,7 @@ import { ActivePlayerContext } from "../BoardDataContext";
 import { GameStateContext } from "../GameStateContext";
 import ChessPiece from "./ChessPiece";
 import { Piece } from "../chess_logic/Piece";
+import { GameState } from "../types/App.d";
 import { coordEqual, Board, containsCoord } from "../chess_logic/Board";
 import { King } from "../chess_logic/King";
 
@@ -25,13 +26,13 @@ export default function Square(props: SquareProps) : JSX.Element {
     let y: number = activePlayer == 'w' ? (7 - position.r) * size
     : position.r * size;
 
-    let state = useContext(GameStateContext);
-    let board: Board = state.board;
+    let state: GameState = useContext(GameStateContext);
+    let board: Board = state.previousBoards[state.historyIndex];
 
-    if (state.board.lastMove !== 0) {
-        if (coordEqual(position, state.board.lastMove.src) ||
-            coordEqual(position, state.board.lastMove.tgt))
-                if ((state.board.getData(state.board.lastMove.tgt) as Piece).color 
+    if (board.lastMove !== 0) {
+        if (coordEqual(position, board.lastMove.src) ||
+            coordEqual(position, board.lastMove.tgt))
+                if ((board.getData(board.lastMove.tgt) as Piece).color 
                 != state.activePlayer)
                     squareState = 'last-move';
     }
