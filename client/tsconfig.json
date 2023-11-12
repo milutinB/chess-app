@@ -8,7 +8,8 @@
       "allowJs": true,
       "moduleResolution": "node",
       "esModuleInterop": true,
-      "typeRoots": ["./src/types", "./node_modules/@types"]
+      "typeRoots": ["./src/types", "./node_modules/@types"],
+      "resolveJsonModule": true
     },
     // "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"],
     // "include": ["./src/**/*.tsx", "./src/**/*.ts"]

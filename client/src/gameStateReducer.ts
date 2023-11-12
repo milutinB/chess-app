@@ -1,5 +1,5 @@
 import { Action, GameState, GameStateAction } from "./types/App.d";
-import { BoardCoord, SquareData, RowIndex, BoardMove } from "./types/Types2.d";
+import { BoardCoord, SquareData, RowIndex, BoardMove, BoardServerData } from "./types/Types2.d";
 import { coordEqual, Board, symToPiece } from "./chess_logic/Board";
 import { Piece
  } from "./chess_logic/Piece";
@@ -8,8 +8,14 @@ import { Pawn } from "./chess_logic/Pawn";
 export default function gameStateReducer(state: GameState, action: GameStateAction) : GameState {
     switch (action.type) {
         case "board click":
-            if (state.board.currentPlayer != state.activePlayer)
-                    return state;
+            console.log(state);
+            if (state.board.currentPlayer != state.activePlayer) {
+                return state;
+            }
+            
+            if (state.historyIndex != state.previousBoards.length - 1) {
+                return state;
+            }
 
             let data: SquareData = state.board.getData(action.selectedSquare);
 
@@ -43,11 +49,21 @@ export default function gameStateReducer(state: GameState, action: GameStateActi
                                 currentAction: 'SELECTING PROMOTION'
                             };
                         }
+
                         state.board.processMove(state.candidatePiece, action.selectedSquare);
-                        state.socket.emit('update', state.board.toJson());
+                        
+                        let previousBoards: Board[] = state.previousBoards;
+                        previousBoards.push(state.board);
+
+                        let serverData: BoardServerData[] = [];
+                        previousBoards.map((b: Board) => {serverData.push(b.toJson())});
+
+                        state.socket.emit('update', serverData);
                         return {
                             ...state,
-                            currentAction: "AWAITING RESPONSE"
+                            currentAction: "AWAITING RESPONSE",
+                            previousBoards: previousBoards,
+                            historyIndex: previousBoards.length
                         }
                     }
 
@@ -77,30 +93,61 @@ export default function gameStateReducer(state: GameState, action: GameStateActi
             }
             break;
         case 'update board':
-            let newBoard: Board = Board.fromJson(action.data);
+            console.log(action.data[action.data.length - 1]);
+            let newBoard: Board = Board.fromJson(action.data[action.data.length - 1]);
+            console.log(newBoard);
             let newAction: Action;
             if (newBoard.checkmate('w') || newBoard.checkmate('b')
             || newBoard.stalemate())
                 newAction = 'END';
             else
                 newAction = 'SELECTING_PIECE';
+            // let previousBoards: Board[] = state.previousBoards;
+            // if (!state.board.equal(Board.fromJson(action.data[action.data.length -1]))) {
+            //     previousBoards.push(state.board);
+            //     console.log("new board!!")
+            // } else
+            //     console.log("equal!")
+
+            let previousBoards: Board[] = action.data.map((json: BoardServerData) => Board.fromJson(json));
+
             return {
                 ...state,
-                board: Board.fromJson(action.data),
+                board: Board.fromJson(action.data[action.data.length -1]),
                 candidateMoves: [],
                 candidatePiece: undefined,
-                currentAction: newAction
+                currentAction: newAction,
+                previousBoards: previousBoards,
+                historyIndex: previousBoards.length - 1
             }
         case "select promotion":
             if (!action.newPiece)
                 throw new Error("promotion undefined");
             let pos: BoardCoord= (state.board.lastMove as BoardMove).tgt;
             state.board.boardState[pos.r][pos.c] = symToPiece(action.newPiece, pos);
-            state.socket.emit('update', state.board.toJson());
+            state.previousBoards[state.previousBoards.length - 1] = state.board;
+
+            previousBoards = state.previousBoards;
+            let serverData: BoardServerData[] = [];
+            previousBoards.map((b: Board) => {serverData.push(b.toJson())});
+
+            state.socket.emit('update', serverData);
             return {
                 ...state,
                 currentAction: 'AWAITING RESPONSE'
             };
+        case "history click":
+            if (action.timeTravelDir == 1 && state.historyIndex < state.previousBoards.length-1)
+                return {
+                    ...state,
+                    historyIndex: state.historyIndex + 1
+                }
+            if (action.timeTravelDir == -1 && state.historyIndex > 0)
+                return {
+                    ...state,
+                    historyIndex: state.historyIndex - 1
+                }
+            return state;
     }
     return state;
 }

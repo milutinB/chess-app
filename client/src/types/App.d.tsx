@@ -23,7 +23,8 @@ export type GameState = {
     candidateMoves: BoardCoord[],
     candidatePiece: BoardCoord | undefined
     socket?: Socket | MockSocket,
-    previousStates?: Board[]
+    previousBoards: Board[],
+    historyIndex: number
 };
 
 export type GameProps = {
@@ -31,6 +32,11 @@ export type GameProps = {
     activePlayer: PlayerColor,
     finish: (socket: Socket) => void
 }
+
+export type HistoryButtonProps = {
+    historyClick: (timeTravelDir: number) => void,
+    timeTravelDir: number
+};
 
 export type AppState = {
     phase: 'landing' | 'waiting' | 'joining' | 'game',
@@ -40,10 +46,11 @@ export type AppState = {
 };
 
 export type GameStateAction = {
-    type: "board click" | "select move" | "update board" | "select promotion",
+    type: "board click" | "select move" | "update board" | "select promotion" | "history click",
     selectedSquare?: BoardCoord,
     data?: any,
-    newPiece?: PieceSym
+    newPiece?: PieceSym,
+    timeTravelDir?: 1 | -1
 
 }
 

@@ -16,7 +16,9 @@ const state: GameState = {
     currentAction: "SELECTING_PIECE",
     activePlayer: "b",
     candidateMoves: [],
-    candidatePiece: undefined
+    candidatePiece: undefined,
+    previousBoards: [new Board(initial_board_state())],
+    historyIndex: 0
 };
 
 it('renders correctly', () => {

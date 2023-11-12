@@ -7,6 +7,7 @@ import Square from './components/Square';
 import { ActivePlayerContext } from './BoardDataContext';
 import { GameStateContext } from './GameStateContext';
 import BoardComponent from './components/Board';
+import HistoryButton from './components/HistoryButton';
 import { Board } from './chess_logic/Board';
 import './index.css';
 import { initial_board_state } from './utils/chess_setup_utils';
@@ -56,7 +57,9 @@ export default function Game(props: GameProps) : JSX.Element {
         activePlayer: props.activePlayer,
         candidateMoves: [],
         candidatePiece: undefined,
-        socket: props.socket
+        socket: props.socket,
+        previousBoards: [new Board(initial_board_state())],
+        historyIndex: 0
     };
 
     const [state, dispatch] = useReducer(gameStateReducer, initialState);
@@ -66,6 +69,13 @@ export default function Game(props: GameProps) : JSX.Element {
             type: "board click",
             selectedSquare: coord
         });
+    }
+
+    function historyClick(dir: 1 | -1) {
+        dispatch({
+            type: "history click",
+            timeTravelDir: dir
+        })
     }
 
     function updateState(data: any) {
@@ -82,11 +92,6 @@ export default function Game(props: GameProps) : JSX.Element {
         });
     };
 
-    // state.socket.on('update', (data) => {
-        // console.log(data)
-        // updateState(data);
-    // });
-
     useEffect(() => {
         state.socket.on('update', (data) => {
             updateState(data);
@@ -96,31 +101,35 @@ export default function Game(props: GameProps) : JSX.Element {
         })
         state.socket.emit('board state', state.board.toJson());
     }, [props.socket]);
-    
-    // useEffect(() => {
-    //     let socket = io()
-    //     socket.on('connect', function() {
-    //         socket.emit('message', {data: 'I\'m connected!'});
-    //     });
-    //     setSocket(s => { return {
-    //         ...s,
-    //         socket: socket
-    //     }})
-    // }, [])
 
     let turnMessage: string = state.activePlayer == state.board.currentPlayer ? 'Your move...' : "Opponent's move..."; 
     let boardSize: number = 600;
+
+    let boardToRender: Board 
+    = state.historyIndex == state.previousBoards.length ? state.board
+    : state.previousBoards[state.historyIndex];
+
     return (
             <GameStateContext.Provider value={state}>
                 <ActivePlayerContext.Provider value={state.activePlayer}>
                     <BoardSizeContext.Provider value={boardSize}>
                         <div className='game'>
                             <BoardComponent 
-                                board={state.board} 
+                                board={boardToRender} 
                                 boardClick={boardClick}
                                 selectPromotion={selectPromotion}
                             />
-                            <div>{turnMessage}</div>
+                            <div className="auxilliary-ui">
+                                <div className="turn-message">{turnMessage}</div>
+                                <div className="history-container">
+                                    <div className="hist-button-container">
+                                        <HistoryButton historyClick={historyClick} timeTravelDir={-1}/>
+                                    </div>
+                                    <div className="hist-button-container">
+                                        <HistoryButton historyClick={historyClick} timeTravelDir={1}/>
+                                    </div>
+                                </div>
+                            </div>
                             <OutcomeMessage socket={props.socket} finish={props.finish}/>
                         </div>
                     </BoardSizeContext.Provider>

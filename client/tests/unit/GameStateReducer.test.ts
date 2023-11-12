@@ -14,7 +14,9 @@ beforeEach(() => {
         activePlayer: 'w',
         candidateMoves: [],
         candidatePiece: undefined,
-        socket: new MockSocket()
+        socket: new MockSocket(),
+        previousBoards: [new Board(initial_board_state())],
+        historyIndex: 0
     };
 });
 
@@ -31,7 +33,7 @@ describe("board click", () => {
             candidateMoves: [
                 {r: 2, c: 1}, {r: 3, c: 1}
             ],
-            candidatePiece: {r: 1, c: 1}
+            candidatePiece: {r: 1, c: 1},
         };
         expect(newState.currentAction === 'SELECTING_MOVE');
         let expectedMoves: BoardCoord[] = [
@@ -48,7 +50,7 @@ describe("board click", () => {
             ...initialGameState,
             candidateMoves: [{r: 2, c: 1}, {r: 3, c: 1}],
             candidatePiece: {r: 1, c: 1},
-            currentAction: 'SELECTING_MOVE'
+            currentAction: 'SELECTING_MOVE',
         }
         let action: GameStateAction = {
             type: 'board click',
@@ -56,6 +58,7 @@ describe("board click", () => {
         };
         let newState: GameState = gameStateReducer(state, action);
         let board: Board = new Board(initial_board_state());
+        let init_board: Board = new Board(initial_board_state());
         board.processMove(
             {r: 1, c: 1},
             {r: 3, c: 1}
@@ -63,7 +66,7 @@ describe("board click", () => {
         let socket: MockSocket = new MockSocket();
         socket.lastEmit = [
             'update',
-            board.toJson()
+            [init_board.toJson(), board.toJson()]
         ];
         expect(newState.socket).toEqual(socket);
         expect(newState.board).toEqual(board);
@@ -78,7 +81,7 @@ describe('update', () => {
 
         let action: GameStateAction = {
             type: 'update board',
-            data: data
+            data: [data]
         };
 
         let newState: GameState = gameStateReducer(initialGameState, action);
@@ -88,7 +91,9 @@ describe('update', () => {
             candidateMoves: [],
             candidatePiece: undefined,
             currentAction: 'SELECTING_PIECE',
-            socket: new MockSocket()
+            socket: new MockSocket(),
+            previousBoards: [board],
+            historyIndex: 0
         };
         expect(newState).toEqual(expectedState);
     });
