@@ -8,7 +8,6 @@ import { Pawn } from "./chess_logic/Pawn";
 export default function gameStateReducer(state: GameState, action: GameStateAction) : GameState {
     switch (action.type) {
         case "board click":
-            console.log(state);
             if (state.board.currentPlayer != state.activePlayer) {
                 return state;
             }
@@ -93,9 +92,7 @@ export default function gameStateReducer(state: GameState, action: GameStateActi
             }
             break;
         case 'update board':
-            console.log(action.data[action.data.length - 1]);
             let newBoard: Board = Board.fromJson(action.data[action.data.length - 1]);
-            console.log(newBoard);
             let newAction: Action;
             if (newBoard.checkmate('w') || newBoard.checkmate('b')
             || newBoard.stalemate())
