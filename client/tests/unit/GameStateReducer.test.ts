@@ -58,6 +58,7 @@ describe("board click", () => {
         };
         let newState: GameState = gameStateReducer(state, action);
         let board: Board = new Board(initial_board_state());
+        let init_board: Board = new Board(initial_board_state());
         board.processMove(
             {r: 1, c: 1},
             {r: 3, c: 1}
@@ -65,9 +66,9 @@ describe("board click", () => {
         let socket: MockSocket = new MockSocket();
         socket.lastEmit = [
             'update',
-            board.toJson()
+            [init_board.toJson(), board.toJson()]
         ];
-        // expect(newState.socket).toEqual(socket);
+        expect(newState.socket).toEqual(socket);
         expect(newState.board).toEqual(board);
     });
 });
