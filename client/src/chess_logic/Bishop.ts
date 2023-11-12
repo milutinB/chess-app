@@ -1,6 +1,7 @@
 import { Piece, RELATIVE_CHESS_ASSEST_DIR } from "./Piece";
 import { PlayerColor, BoardCoord, BoardState, RowIndex, ColIndex, PieceSym } from "../types/Types2.d";
-var board_config = require("./../board_config.json");
+import board_config from "./../board_config.json";
+// var board_config = require("./../board_config.json");
 
 export class Bishop extends Piece {
     constructor(color: PlayerColor, position: BoardCoord) {

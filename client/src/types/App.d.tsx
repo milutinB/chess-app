@@ -23,8 +23,8 @@ export type GameState = {
     candidateMoves: BoardCoord[],
     candidatePiece: BoardCoord | undefined
     socket?: Socket | MockSocket,
-    previousBoards?: Board[],
-    historyIndex?: number
+    previousBoards: Board[],
+    historyIndex: number
 };
 
 export type GameProps = {

@@ -28,7 +28,8 @@ export default function Square(props: SquareProps) : JSX.Element {
 
     let state: GameState = useContext(GameStateContext);
     let board: Board = state.previousBoards[state.historyIndex];
-
+     
+        
     if (board.lastMove !== 0) {
         if (coordEqual(position, board.lastMove.src) ||
             coordEqual(position, board.lastMove.tgt))

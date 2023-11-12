@@ -81,6 +81,7 @@ export class Board {
                 }
             });
         });
+        this.lastMove = 0;
         this.validateBoard();
     }
 

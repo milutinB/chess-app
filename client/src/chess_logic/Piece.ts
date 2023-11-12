@@ -1,5 +1,7 @@
 import { PlayerColor, BoardCoord, BoardState, PieceSym } from "../types/Types2.d";
-var board_config = require("./../board_config.json");
+import board_config from "./../board_config.json";
+// var board_config = require("./../board_config.json");
+
 export const RELATIVE_CHESS_ASSEST_DIR: string = "../chess_assets/";
 
 export abstract class Piece {

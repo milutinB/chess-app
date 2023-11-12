@@ -17,7 +17,6 @@ module.exports = {
         rules: [
             {
                 test: /\.(tsx|jsx|ts|js)?$/,
-                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'babel-loader',
@@ -34,7 +33,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                test: /\.(png|svg|jpg|jpeg|gif|txt)$/i,
                 type: 'asset/resource'
             },
             {
