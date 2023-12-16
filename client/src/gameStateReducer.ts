@@ -4,6 +4,7 @@ import { coordEqual, Board, symToPiece } from "./chess_logic/Board";
 import { Piece
  } from "./chess_logic/Piece";
 import { Pawn } from "./chess_logic/Pawn";
+import { Socket } from "socket.io-client";
 
 export default function gameStateReducer(state: GameState, action: GameStateAction) : GameState {
     switch (action.type) {
@@ -48,9 +49,9 @@ export default function gameStateReducer(state: GameState, action: GameStateActi
                                 currentAction: 'SELECTING PROMOTION'
                             };
                         }
-
+                        console.log('about to process move...');
                         state.board.processMove(state.candidatePiece, action.selectedSquare);
-                        
+                        console.log('processed move...');
                         let previousBoards: Board[] = state.previousBoards;
                         previousBoards.push(state.board);
 
@@ -58,6 +59,7 @@ export default function gameStateReducer(state: GameState, action: GameStateActi
                         previousBoards.map((b: Board) => {serverData.push(b.toJson())});
 
                         state.socket.emit('update', serverData);
+
                         return {
                             ...state,
                             currentAction: "AWAITING RESPONSE",

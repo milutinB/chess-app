@@ -5,6 +5,10 @@ __pycache__
 
 venv
 
+Dockerfile
+
+node_modules
+
 client/node_modules
 client/build/
 
