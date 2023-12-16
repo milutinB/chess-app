@@ -26,6 +26,6 @@ Captured pieces:
 
 <img src="readme_images/captured_pieces.jpeg" width="300">
 
-"forward" and "back" arrows to allow cycling through orevious moves:
+"forward" and "back" arrows to allow cycling through previous moves:
 
 <img src="readme_images/prev_moves.gif" width="300">
