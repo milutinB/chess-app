@@ -1,10 +1,10 @@
 # chess-app
 
-Source code for a pvp chess web app written in TypeScript and React. This repository currently contains a very basic websocket-based backend I have used for development and testing but it should definitely not be deployed anywhere. 
+Source code for a pvp chess web app written in TypeScript and React. This repository currently contains a very basic websocket-based backend I have used for development and testing. 
 
 ## Running locally
 
-Clone this repo and cd to the newly create chess-app directory. Then run the following: 
+Clone this repo and cd to the newly create chess-app directory then run the following: 
 
 ```bash
 cd client
@@ -13,7 +13,7 @@ cd ..
 npm run start
 ```
 
-Navigate to localhost:3000
+Navigate to localhost:3000 in your browser of choice.
 
 ## Features
 
