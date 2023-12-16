@@ -53,7 +53,6 @@ io.on('connection', (socket) => {
         } else {
             room_code = room_list[1];
         }
-        console.log(arg);
         io.to(room_code).emit('update', arg);
     });
 });
