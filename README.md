@@ -1,6 +1,6 @@
 # chess-app
 
-Source code for a pvp chess web app written in TypeScript and React. This repository currently contains a very basic websocket-based backend I have used for development and testing. 
+Source code for a pvp chess web app written in TypeScript and React. This repository currently contains a very basic websocket-based backend I have used for development and testing. It is not robust enough to be deployed in its current state. 
 
 ## Running locally
 
@@ -13,7 +13,13 @@ cd ..
 npm run start
 ```
 
-Navigate to localhost:3000 in your browser of choice.
+Navigate to localhost:3000 in your browser of choice and click 'create game'. Open another tab at localhost:3000 and click 'join game'.
+
+<img src="readme_images/joining.jpeg" width="400">
+
+Enter the code from the first tab and click 'join'. A chess game will begin in both tabs.
+
+<img src="readme_images/starting.jpeg" width="400">
 
 ## Features
 
